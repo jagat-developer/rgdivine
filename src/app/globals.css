@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+:root {
+  --header-height: 6rem;
+
+  --background: #EFF1E3;
+  --foreground: #121712;
+
+  --surface-1: #FFFFFF;
+  --surface-2: #E6EBCF;
+  --surface-3: #DBE2B6;
+  --surface-4: #E8ECD4;
+
+  --ink: #121712;
+  --ink-soft: #3A4138;
+  --ink-on-dark: #F6F8F0;
+
+  --leaf: #9DBC2C;
+  --leaf-hover: #8AA825;
+  --leaf-deep: #6E8D1B;
+  --leaf-soft: rgba(157, 188, 44, 0.16);
+
+  --border-strong: rgba(18, 23, 18, 0.16);
+  --border-soft: rgba(18, 23, 18, 0.08);
+
+  --tracking-luxe: 0.22em;
+  --tracking-luxe-wide: 0.28em;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-on-dark: var(--ink-on-dark);
+  --color-leaf: var(--leaf);
+  --color-leaf-hover: var(--leaf-hover);
+  --color-leaf-deep: var(--leaf-deep);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-manrope);
+  --tracking-luxe: var(--tracking-luxe);
+  --tracking-luxe-wide: var(--tracking-luxe-wide);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(157, 188, 44, 0.32);
+  color: var(--ink);
+}
+
+img {
+  max-width: 100%;
+}
+
+@utility fluid-hero {
+  font-size: clamp(2.25rem, 6vw, 4.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+@utility fluid-h2 {
+  font-size: clamp(1.85rem, 4.5vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+}
+
+@utility eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-luxe);
+  color: var(--leaf-deep);
+}
+
+.form-control > input,
+.form-control > select,
+.form-control > textarea {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: #FFFFFF;
+  padding: 0.85rem 0.95rem;
+  color: var(--ink);
+  outline: none;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.form-control > textarea {
+  resize: vertical;
+}
+
+.form-control > input:focus,
+.form-control > select:focus,
+.form-control > textarea:focus {
+  border-color: var(--leaf);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(157, 188, 44, 0.22);
+}
+
+.form-control > input::placeholder,
+.form-control > textarea::placeholder {
+  color: rgba(18, 23, 18, 0.4);
+}
+
+@keyframes sparkle-float {
+  0%   { transform: translate3d(0, 0, 0) scale(0.6) rotate(0deg);   opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { transform: translate3d(8px, -22px, 0) scale(1) rotate(40deg); }
+  80%  { opacity: 1; }
+  100% { transform: translate3d(-6px, -48px, 0) scale(0.5) rotate(80deg); opacity: 0; }
+}
+
+.sparkle {
+  animation-name: sparkle-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  filter: drop-shadow(0 0 6px rgba(157, 188, 44, 0.45));
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
