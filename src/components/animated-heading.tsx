@@ -74,7 +74,7 @@ export function AnimatedHeading({
         return (
           <span
             key={`${word}-${index}`}
-            className="mr-[0.3em] inline-block overflow-hidden align-bottom"
+            className="mr-[0.3em] inline-block overflow-hidden pb-[0.14em] align-bottom"
           >
             <motion.span
               variants={wordVariants}

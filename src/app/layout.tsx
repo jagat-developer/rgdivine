@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Manrope } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { homePageSeo, company } from "@/lib/site-data";
@@ -8,17 +8,10 @@ import { localBusinessSchema } from "@/lib/schema";
 import { jsonLd } from "@/lib/utils";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500", "600"],
-});
-
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -45,7 +38,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${manrope.variable} h-full scroll-smooth antialiased`}
+      className={`${manrope.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full bg-surface-1 text-ink">
         <script

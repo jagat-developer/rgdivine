@@ -75,72 +75,67 @@ export default function HomePage() {
       />
 
       {/* Hero */}
-      <section className="relative isolate overflow-hidden border-b border-ink/5 bg-surface-2">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(157,188,44,0.18),transparent_55%)]" />
+      <section className="relative isolate flex min-h-[calc(100svh-var(--header-height))] items-center overflow-hidden border-b border-ink/5 bg-surface-2">
+        <Image
+          src="/images/rg-divine-hero.png"
+          alt="RG Divine Cleaning professional wiping a countertop in a bright home"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[64%_center] sm:object-center"
+        />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-full bg-white/55 md:w-[62%] lg:w-[58%]" />
         <SparkleField count={18} seed={11} />
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-6 lg:px-8 lg:py-24">
-          <Reveal className="self-center">
-            <p className="eyebrow">{company.tagline}</p>
+
+        <div className="relative mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-10">
+          <Reveal className="max-w-3xl">
+            <p className="eyebrow">{company.name}</p>
+            <p className="mt-2 text-sm font-medium text-leaf-deep">{company.tagline}</p>
             <AnimatedHeading
-              text="A clean space makes all the difference."
-              highlight="difference."
-              className="mt-6 font-display fluid-hero font-semibold text-ink"
+              text="Home and business cleaning in HRM."
+              highlight="cleaning"
+              className="mt-3 font-display text-5xl font-semibold leading-[1.04] tracking-[0] text-ink sm:text-6xl 2xl:text-7xl"
             />
-            <p className="mt-7 max-w-xl text-base font-light leading-8 text-ink-soft sm:text-lg">
-              Professional, eco-friendly cleaning across Halifax Regional Municipality. Residential, commercial,
-              move-in/out, deep cleans, post-construction, windows, floor strip-and-wax — one trusted team for all
-              of it.
+            <p className="mt-5 max-w-xl text-base font-normal leading-8 text-ink sm:text-lg">
+              A clean space makes all the difference. Professional cleaning services that bring freshness, comfort,
+              and happiness to your home or business.
             </p>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Magnetic>
                 <ButtonLink href="/quote">Request a free estimate</ButtonLink>
               </Magnetic>
               <a
                 href={`tel:${company.phone}`}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-6 text-sm font-semibold text-ink transition hover:border-leaf hover:text-leaf-deep"
+                className="inline-flex min-h-12 flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border border-ink/15 bg-white/90 px-5 py-3 text-sm font-semibold text-ink shadow-sm backdrop-blur-sm transition hover:border-leaf hover:bg-white hover:text-leaf-deep"
               >
                 <Phone className="h-4 w-4 text-leaf-deep" aria-hidden="true" />
                 {company.phoneDisplay}
+                {company.phoneAlt ? (
+                  <>
+                    <span aria-hidden="true" className="text-ink/30">|</span>
+                    <span>{company.phoneAltDisplay}</span>
+                  </>
+                ) : null}
               </a>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs uppercase tracking-luxe text-ink-soft">
-              <span className="inline-flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-leaf-deep" aria-hidden="true" />
-                Insured & bonded
-              </span>
-              <span aria-hidden="true" className="text-leaf">·</span>
-              <span className="inline-flex items-center gap-2">
-                <Leaf className="h-4 w-4 text-leaf-deep" aria-hidden="true" />
-                Eco-friendly products
-              </span>
-              <span aria-hidden="true" className="text-leaf">·</span>
-              <span className="inline-flex items-center gap-2">
-                <Star className="h-4 w-4 text-leaf-deep" aria-hidden="true" />
-                Rated by HRM clients
-              </span>
+            <div className="mt-6 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
+              {company.pillars.map((pillar) => {
+                const Icon = PILLAR_ICONS[pillar as keyof typeof PILLAR_ICONS] ?? CheckCircle2;
+
+                return (
+                  <div
+                    key={pillar}
+                    className="flex min-h-20 flex-col items-center justify-center gap-2 border-l border-ink/10 px-3 py-3 text-center text-[0.66rem] font-semibold uppercase leading-4 tracking-[0.12em] text-ink-soft first:border-l-0"
+                  >
+                    <Icon className="h-6 w-6 text-leaf-deep" aria-hidden="true" />
+                    {pillar}
+                  </div>
+                );
+              })}
             </div>
-          </Reveal>
-          <Reveal className="relative">
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl border border-ink/5 shadow-2xl shadow-leaf-deep/10">
-              <Image
-                src="https://images.unsplash.com/photo-1686178827149-6d55c72d81df?q=80&w=2000&auto=format&fit=crop"
-                alt="A professional cleaner in a green shirt and black gloves vacuuming furniture during a home cleaning service"
-                fill
-                priority
-                sizes="(min-width: 1024px) 45vw, 100vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-6 -left-4 hidden rounded-2xl border border-ink/5 bg-white p-5 shadow-xl shadow-leaf-deep/10 sm:block">
-              <div className="flex items-center gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-full bg-leaf-soft text-leaf-deep">
-                  <Sparkles className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-xs uppercase tracking-luxe text-leaf-deep">{company.tagline}</p>
-                  <p className="text-sm font-semibold text-ink">{serviceAreas.length} HRM communities served</p>
-                </div>
-              </div>
+            <div className="mt-5 inline-flex items-center gap-2 rounded-md bg-leaf px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-sm shadow-leaf-deep/20">
+              <Star className="h-4 w-4" aria-hidden="true" />
+              Residential & commercial cleaning
             </div>
           </Reveal>
         </div>
@@ -161,8 +156,8 @@ export default function HomePage() {
               const Icon = PILLAR_ICONS[pillar as keyof typeof PILLAR_ICONS] ?? Sparkles;
               return (
                 <Reveal key={pillar} delay={index * 0.05}>
-                  <article className="flex h-full flex-col gap-4 rounded-2xl border border-ink/5 bg-surface-2 p-6">
-                    <span className="grid h-12 w-12 place-items-center rounded-full bg-white text-leaf-deep">
+                  <article className="group flex h-full flex-col gap-4 rounded-2xl border border-ink/5 bg-surface-2 p-6 transition hover:-translate-y-1 hover:border-leaf/40 hover:shadow-lg hover:shadow-leaf-deep/10">
+                    <span className="grid h-12 w-12 place-items-center rounded-full bg-white text-leaf-deep transition group-hover:bg-leaf group-hover:text-white">
                       <Icon className="h-6 w-6" aria-hidden="true" />
                     </span>
                     <h3 className="font-display text-lg font-semibold text-ink">{pillar}</h3>
@@ -176,7 +171,7 @@ export default function HomePage() {
       </section>
 
       {/* Services grid */}
-      <section className="border-b border-ink/5 bg-surface-2">
+      <section id="services" className="scroll-mt-[var(--header-height)] border-b border-ink/5 bg-surface-2">
         <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <Reveal>
             <SectionHeading
@@ -239,8 +234,8 @@ export default function HomePage() {
           <div className="mt-14 grid gap-5 lg:grid-cols-3">
             {STEPS.map((step, index) => (
               <Reveal key={step.title} delay={index * 0.05}>
-                <article className="flex h-full flex-col gap-4 rounded-2xl border border-ink/5 bg-surface-2 p-7">
-                  <span className="grid h-12 w-12 place-items-center rounded-full bg-leaf text-white font-display text-lg font-semibold">
+                <article className="group relative flex h-full flex-col gap-4 rounded-2xl border border-ink/5 bg-surface-2 p-7 transition hover:-translate-y-1 hover:border-leaf/40 hover:shadow-lg hover:shadow-leaf-deep/10">
+                  <span className="grid h-12 w-12 place-items-center rounded-full bg-leaf text-white font-display text-lg font-semibold shadow-sm shadow-leaf-deep/20">
                     {index + 1}
                   </span>
                   <h3 className="font-display text-xl font-semibold text-ink">{step.title}</h3>
