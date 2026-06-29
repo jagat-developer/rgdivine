@@ -37,9 +37,8 @@ export const company: Company = {
 export const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
-  { label: "Service Areas", href: "/service-areas" },
   { label: "About", href: "/about" },
-  { label: "Blog", href: "/blog" },
+  { label: "Reviews", href: "/testimonials" },
   { label: "Contact", href: "/contact" },
 ];
 

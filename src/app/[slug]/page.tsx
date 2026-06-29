@@ -7,6 +7,7 @@ import { AnimatedHeading } from "@/components/animated-heading";
 import { ButtonLink } from "@/components/button-link";
 import { ContactPanel } from "@/components/contact-panel";
 import { Magnetic } from "@/components/magnetic";
+import { QuoteForm } from "@/components/quote-form";
 import { Reveal } from "@/components/reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { SparkleField } from "@/components/sparkle-field";
@@ -201,7 +202,7 @@ function ProgrammaticTemplate({ page }: { page: ProgrammaticPage }) {
           <p>{service.summary}</p>
           <p>
             Common areas we serve across {area.name} include {area.neighbourhoods.slice(0, 4).join(", ")}.
-            Each property type calls for a slightly different approach — we'll scope the right one for yours
+            Each property type calls for a slightly different approach — we&apos;ll scope the right one for yours
             on the quote call.
           </p>
         </Reveal>
@@ -730,15 +731,30 @@ function QuoteTemplate({ page }: { page: ContentPage }) {
           ]),
         }}
       />
-      <PageHero eyebrow={page.eyebrow} title={page.title} summary={page.summary} image={page.heroImage} />
-      <section className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-        {page.body.map((paragraph) => (
-          <p key={paragraph} className="mb-6 text-base font-light leading-9 text-ink-soft sm:text-lg">
-            {paragraph}
-          </p>
-        ))}
+      <section className="border-b border-ink/5 bg-surface-2">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-20">
+          <Reveal>
+            <p className="eyebrow">{page.eyebrow}</p>
+            <h1 className="mt-6 font-display fluid-hero font-semibold text-ink">{page.title}</h1>
+            <p className="mt-7 max-w-2xl text-base font-light leading-8 text-ink-soft sm:text-lg">
+              {page.summary}
+            </p>
+            <div className="mt-8 grid gap-3 text-sm font-medium text-ink">
+              {["Contact Information", "Address", "Cleaning Services", "Schedule", "Submit"].map((item, index) => (
+                <div key={item} className="flex items-center gap-3">
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-leaf text-xs font-semibold text-white">
+                    {index + 1}
+                  </span>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </Reveal>
+          <Reveal delay={0.1} className="rounded-2xl border border-ink/5 bg-white p-5 shadow-xl shadow-leaf-deep/10 sm:p-7">
+            <QuoteForm />
+          </Reveal>
+        </div>
       </section>
-      <ContactPanel />
     </>
   );
 }

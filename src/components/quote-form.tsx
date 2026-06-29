@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, MapPin, Send } from "lucide-react";
+import { CalendarDays, ClipboardList, MapPin, Send, UserRound, type LucideIcon } from "lucide-react";
 import type { QuoteSubmission } from "@/lib/types";
 import { SERVICE_OPTIONS } from "@/lib/lead";
 
-type Stage = "address" | "details" | "submitting" | "success" | "error";
+type Stage = "idle" | "submitting" | "success" | "error";
 
 const initialForm: QuoteSubmission = {
   address: "",
@@ -13,9 +13,7 @@ const initialForm: QuoteSubmission = {
   phone: "",
   email: "",
   serviceType: ["residential-commercial-cleaning"],
-  propertyType: "Home",
-  sqftTier: "1000-2000",
-  frequency: "Bi-weekly",
+  frequency: "One-time",
   preferredDate: "",
   notes: "",
   caslConsent: true,
@@ -25,7 +23,7 @@ const initialForm: QuoteSubmission = {
 type ServiceId = QuoteSubmission["serviceType"][number];
 
 export function QuoteForm() {
-  const [stage, setStage] = useState<Stage>("address");
+  const [stage, setStage] = useState<Stage>("idle");
   const [form, setForm] = useState<QuoteSubmission>(initialForm);
   const [consent, setConsent] = useState(false);
   const [message, setMessage] = useState("");
@@ -43,14 +41,6 @@ export function QuoteForm() {
         : [...current.serviceType, id];
       return { ...current, serviceType: next.length ? (next as QuoteSubmission["serviceType"]) : current.serviceType };
     });
-  }
-
-  function startStepTwo(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (form.address.trim().length < 4) {
-      return;
-    }
-    setStage("details");
   }
 
   async function submitFull(event: React.FormEvent<HTMLFormElement>) {
@@ -110,45 +100,10 @@ export function QuoteForm() {
     );
   }
 
-  if (stage === "address") {
-    return (
-      <form onSubmit={startStepTwo} className="grid gap-4" aria-label="Quote request, step one">
-        <p className="eyebrow">Free estimate · Step 1 of 2</p>
-        <h3 className="font-display text-2xl font-semibold leading-tight text-ink sm:text-3xl">
-          What space needs cleaning?
-        </h3>
-        <p className="text-sm font-light leading-7 text-ink-soft">
-          Start with the address. Step two takes 60 seconds.
-        </p>
-        <label className="grid gap-2 text-sm font-medium text-ink">
-          <span className="form-control">
-            <span className="pointer-events-none -mb-9 ml-3 flex items-center text-ink/40">
-              <MapPin className="h-4 w-4" aria-hidden="true" />
-            </span>
-            <input
-              required
-              autoComplete="street-address"
-              placeholder="Street address, city"
-              value={form.address}
-              onChange={(event) => update("address", event.target.value)}
-              className="!pl-9"
-            />
-          </span>
-        </label>
-        <button
-          type="submit"
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-leaf px-5 text-sm font-semibold text-white transition hover:bg-leaf-hover"
-        >
-          Continue <ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </button>
-      </form>
-    );
-  }
-
   const submitting = stage === "submitting";
 
   return (
-    <form onSubmit={submitFull} className="grid gap-4" aria-label="Quote request, step two">
+    <form onSubmit={submitFull} className="grid gap-6" aria-label="Free no-obligation quote request">
       <div className="honeypot" aria-hidden="true">
         <label>
           Leave this field empty
@@ -163,117 +118,112 @@ export function QuoteForm() {
         </label>
       </div>
 
-      <div className="flex items-center justify-between">
-        <p className="eyebrow">Step 2 of 2</p>
-        <button
-          type="button"
-          onClick={() => setStage("address")}
-          className="text-xs uppercase tracking-luxe text-ink-soft hover:text-leaf-deep"
-        >
-          Edit address
-        </button>
+      <div>
+        <p className="eyebrow">Free, no-obligation quote</p>
+        <h3 className="mt-3 font-display text-2xl font-semibold leading-tight text-ink sm:text-3xl">
+          Tell us about the cleaning.
+        </h3>
+        <p className="mt-3 text-sm font-light leading-7 text-ink-soft">
+          Fill out the form and we will follow up with a tailored quote.
+        </p>
       </div>
 
-      <p className="text-sm font-light text-ink-soft">
-        Quoting for <span className="text-ink">{form.address}</span>
-      </p>
-
-      <fieldset className="grid gap-3">
-        <legend className="text-sm font-medium text-ink">Services needed</legend>
-        <div className="grid gap-2 sm:grid-cols-2">
-          {SERVICE_OPTIONS.map((option) => {
-            const checked = form.serviceType.includes(option.id);
-            return (
-              <label
-                key={option.id}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-sm font-medium transition ${
-                  checked
-                    ? "border-leaf bg-leaf-soft text-ink"
-                    : "border-ink/10 bg-white text-ink-soft hover:border-leaf/60"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 accent-leaf-deep"
-                  checked={checked}
-                  onChange={() => toggleService(option.id)}
-                />
-                <span>{option.label}</span>
-              </label>
-            );
-          })}
+      <QuoteSection icon={UserRound} title="1. Contact Information">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Name">
+            <input
+              required
+              autoComplete="name"
+              value={form.name}
+              onChange={(event) => update("name", event.target.value)}
+            />
+          </Field>
+          <Field label="Phone">
+            <input
+              required
+              type="tel"
+              autoComplete="tel"
+              value={form.phone}
+              onChange={(event) => update("phone", event.target.value)}
+            />
+          </Field>
         </div>
-      </fieldset>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Name">
-          <input required value={form.name} onChange={(event) => update("name", event.target.value)} />
-        </Field>
-        <Field label="Phone">
+        <Field label="Email">
           <input
             required
-            type="tel"
-            value={form.phone}
-            onChange={(event) => update("phone", event.target.value)}
+            type="email"
+            autoComplete="email"
+            value={form.email}
+            onChange={(event) => update("email", event.target.value)}
           />
         </Field>
-      </div>
+      </QuoteSection>
 
-      <Field label="Email">
-        <input
-          required
-          type="email"
-          value={form.email}
-          onChange={(event) => update("email", event.target.value)}
-        />
-      </Field>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Property type">
-          <select
-            value={form.propertyType}
-            onChange={(event) =>
-              update("propertyType", event.target.value as QuoteSubmission["propertyType"])
-            }
-          >
-            {["Home", "Apartment/Condo", "Office", "Retail", "Industrial", "Other"].map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Approximate sqft">
-          <select
-            value={form.sqftTier}
-            onChange={(event) => update("sqftTier", event.target.value as QuoteSubmission["sqftTier"])}
-          >
-            {["<500", "500-1000", "1000-2000", "2000-3500", "3500+"].map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </Field>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Frequency">
-          <select
-            value={form.frequency}
-            onChange={(event) =>
-              update("frequency", event.target.value as QuoteSubmission["frequency"])
-            }
-          >
-            {["One-time", "Weekly", "Bi-weekly", "Monthly", "Custom"].map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Preferred date">
+      <QuoteSection icon={MapPin} title="2. Address">
+        <Field label="Street address and city">
           <input
-            type="date"
-            value={form.preferredDate ?? ""}
-            onChange={(event) => update("preferredDate", event.target.value)}
+            required
+            autoComplete="street-address"
+            placeholder="Street address, city"
+            value={form.address}
+            onChange={(event) => update("address", event.target.value)}
           />
         </Field>
-      </div>
+      </QuoteSection>
+
+      <QuoteSection icon={ClipboardList} title="3. Cleaning Services">
+        <fieldset className="grid gap-3">
+          <legend className="sr-only">Cleaning services needed</legend>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {SERVICE_OPTIONS.map((option) => {
+              const checked = form.serviceType.includes(option.id);
+              return (
+                <label
+                  key={option.id}
+                  className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-sm font-medium transition ${
+                    checked
+                      ? "border-leaf bg-leaf-soft text-ink"
+                      : "border-ink/10 bg-white text-ink-soft hover:border-leaf/60"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-leaf-deep"
+                    checked={checked}
+                    onChange={() => toggleService(option.id)}
+                  />
+                  <span>{option.label}</span>
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      </QuoteSection>
+
+      <QuoteSection icon={CalendarDays} title="4. When should it be scheduled?">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Preferred date">
+            <input
+              required
+              type="date"
+              value={form.preferredDate ?? ""}
+              onChange={(event) => update("preferredDate", event.target.value)}
+            />
+          </Field>
+          <Field label="How often?">
+            <select
+              value={form.frequency}
+              onChange={(event) =>
+                update("frequency", event.target.value as QuoteSubmission["frequency"])
+              }
+            >
+              {["One-time", "Weekly", "Bi-weekly", "Monthly", "Custom"].map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          </Field>
+        </div>
+      </QuoteSection>
 
       <Field label="Anything else worth noting?">
         <textarea
@@ -303,7 +253,7 @@ export function QuoteForm() {
         className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-leaf px-5 text-sm font-semibold text-white transition hover:bg-leaf-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
         <Send className="h-4 w-4" aria-hidden="true" />
-        {submitting ? "Sending..." : "Request my quote"}
+        {submitting ? "Sending..." : "Submit Quote Request"}
       </button>
 
       {message ? (
@@ -317,6 +267,26 @@ export function QuoteForm() {
         </p>
       ) : null}
     </form>
+  );
+}
+
+function QuoteSection({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: LucideIcon;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="grid gap-4 rounded-lg border border-ink/10 bg-white p-4">
+      <h4 className="flex items-center gap-2 text-sm font-semibold text-ink">
+        <Icon className="h-4 w-4 text-leaf-deep" aria-hidden="true" />
+        {title}
+      </h4>
+      {children}
+    </section>
   );
 }
 

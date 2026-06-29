@@ -13,7 +13,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-ink/5 bg-white/90 backdrop-blur-xl">
+    <header className="sticky inset-x-0 top-0 z-50 border-b border-ink/5 bg-white/90 shadow-sm shadow-ink/5 backdrop-blur-xl">
       <div className="mx-auto flex h-[var(--header-height)] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
@@ -27,7 +27,7 @@ export function Header() {
             width={1254}
             height={1254}
             priority
-            className="h-16 w-16 object-contain sm:h-20 sm:w-20"
+            className="h-20 w-20 object-contain sm:h-24 sm:w-24"
           />
           <span className="sr-only">{company.name}</span>
         </Link>
@@ -52,31 +52,33 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href={`tel:${company.phone}`}
-            className="inline-flex h-11 items-center gap-2 rounded-full border border-ink/10 px-4 text-sm font-medium text-ink transition hover:border-leaf hover:text-leaf-deep"
-          >
-            <Phone className="h-4 w-4 text-leaf-deep" aria-hidden="true" />
-            {company.phoneDisplay}
-          </a>
           <Link
             href="/quote"
             className="inline-flex h-11 items-center rounded-full bg-leaf px-5 text-sm font-semibold text-white transition hover:bg-leaf-hover"
           >
-            Request an Estimate
+            Get a Quote
           </Link>
         </div>
 
-        <button
-          type="button"
-          className="grid h-11 w-11 place-items-center rounded-full border border-ink/10 text-ink lg:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span className="sr-only">Toggle navigation</span>
-          {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <a
+            href={`tel:${company.phone}`}
+            className="inline-flex h-10 items-center gap-1.5 rounded-full bg-leaf px-3 text-xs font-semibold text-white transition hover:bg-leaf-hover"
+          >
+            <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+            Call Now
+          </a>
+          <button
+            type="button"
+            className="grid h-11 w-11 place-items-center rounded-full border border-ink/10 text-ink"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((value) => !value)}
+          >
+            <span className="sr-only">Toggle navigation</span>
+            {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+          </button>
+        </div>
       </div>
 
       {open ? (
@@ -104,7 +106,7 @@ export function Header() {
               className="inline-flex h-12 items-center justify-center rounded-full border border-leaf px-4 text-sm font-semibold text-leaf-deep"
               onClick={() => setOpen(false)}
             >
-              Request an estimate
+              Get a Quote
             </Link>
           </nav>
         </div>

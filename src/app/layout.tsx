@@ -46,7 +46,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: jsonLd(localBusinessSchema()) }}
         />
         <Header />
-        <main className="min-h-screen pt-[var(--header-height)]">{children}</main>
+        <main className="min-h-screen">{children}</main>
         <Footer />
       </body>
     </html>

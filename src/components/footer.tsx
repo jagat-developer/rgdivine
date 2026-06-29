@@ -32,7 +32,7 @@ export function Footer() {
             ))}
             <li>
               <Link className="transition hover:text-leaf-deep" href="/quote">
-                Request an estimate
+                Get a Quote
               </Link>
             </li>
           </ul>

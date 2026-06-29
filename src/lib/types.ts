@@ -130,8 +130,8 @@ export type QuoteSubmission = {
     | "floor-strip-wax"
     | "custom-cleaning-plans"
   >;
-  propertyType: "Home" | "Apartment/Condo" | "Office" | "Retail" | "Industrial" | "Other";
-  sqftTier: "<500" | "500-1000" | "1000-2000" | "2000-3500" | "3500+";
+  propertyType?: "Home" | "Apartment/Condo" | "Office" | "Retail" | "Industrial" | "Other";
+  sqftTier?: "<500" | "500-1000" | "1000-2000" | "2000-3500" | "3500+";
   frequency: "One-time" | "Weekly" | "Bi-weekly" | "Monthly" | "Custom";
   preferredDate?: string;
   notes?: string;
